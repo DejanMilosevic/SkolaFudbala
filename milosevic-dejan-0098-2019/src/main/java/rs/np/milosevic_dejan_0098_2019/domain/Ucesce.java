@@ -10,141 +10,222 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- *
+ * Predstavlja ucesce clana na treningu. Ima informaciju o treningu na kojem je
+ * ostvareno ucesce, redni broj, napomenu u vezi clana, kao i informaciju o
+ * clanu koji ostvaruje ucesce na treningu.
+ * 
+ * Nasledjuje apstraktnu domensku klasu AbstractDomainObject i implementira sve
+ * njene apstraktne metode.
+ * 
  * @author Dejan
+ * @since 1.1.0
  */
 public class Ucesce extends AbstractDomainObject {
 
-    private Trening trening;
-    private int rbUcesca;
-    private String napomena;
-    private Clan clan;
+	/**
+	 * Trening na kojem je ostvareno ucesce kao Trening
+	 */
+	private Trening trening;
 
-    public Ucesce(Trening trening, int rbUcesca, String napomena, Clan clan) {
-        this.trening = trening;
-        this.rbUcesca = rbUcesca;
-        this.napomena = napomena;
-        this.clan = clan;
-    }
+	/**
+	 * Redni broj ucesca kao ceo broj
+	 */
+	private int rbUcesca;
 
-    public Ucesce() {
-    }
+	/**
+	 * Napomena vezana za eventualnu povredu clana koji ostvaruje ucesce kao String
+	 */
+	private String napomena;
 
-    @Override
-    public String nazivTabele() {
-        return " Ucesce ";
-    }
+	/**
+	 * Clan koji ostvaruje ucesce na treningu kao Clan
+	 */
+	private Clan clan;
 
-    @Override
-    public String alijas() {
-        return " u ";
-    }
+	/**
+	 * Prazan konstruktor koji postavlja vrednosti atributa ucesca na podrazumevane.
+	 */
+	public Ucesce() {
+	}
 
-    @Override
-    public String join() {
-        return " JOIN TRENING T USING (TRENINGID) "
-                + "JOIN CLAN C USING (CLANID) "
-                + "JOIN KATEGORIJA K ON (K.KATEGORIJAID = T.KATEGORIJAID) "
-                + "JOIN TRENER TR ON (TR.TRENERID = T.TRENERID) "
-                + "JOIN ADMINISTRATOR A ON (A.ADMINISTRATORID = T.ADMINISTRATORID) "
-                + "JOIN TEREN TE ON (TE.TERENID = T.TERENID) "
-                + "JOIN POZICIJA P ON (P.POZICIJAID = C.POZICIJAID)";
-    }
+	/**
+	 * Konstruktor koji postavlja vrednosti atributa ucesca na osnovu unetih
+	 * parametara.
+	 * 
+	 * @param trening  vrednost za trening na kojem je ostvareno ucesce
+	 * @param rbUcesca vrednost za redni broj ucesca
+	 * @param napomena vrednost za napomenu ucesca
+	 * @param clan     vrednost za clana koji ostvaruje ucesce
+	 */
+	public Ucesce(Trening trening, int rbUcesca, String napomena, Clan clan) {
+		this.trening = trening;
+		this.rbUcesca = rbUcesca;
+		this.napomena = napomena;
+		this.clan = clan;
+	}
 
-    @Override
-    public ArrayList<AbstractDomainObject> vratiListu(ResultSet rs) throws SQLException {
-        ArrayList<AbstractDomainObject> lista = new ArrayList<>();
+	/**
+	 * Vraca trening na kojem je ostvareno ucesce.
+	 * 
+	 * @return trening na kojem je ostvareno ucesce kao Trening
+	 */
+	public Trening getTrening() {
+		return trening;
+	}
 
-        while (rs.next()) {
-            Administrator a = new Administrator(rs.getLong("AdministratorID"),
-                    rs.getString("Ime"), rs.getString("Prezime"),
-                    rs.getString("Username"), rs.getString("Password"));
+	/**
+	 * Postavlja vrednost za trening na kojem je ostvareno ucesce.
+	 * 
+	 * @param trening nova vrednost za trening na kojem je ostvareno ucesce
+	 */
+	public void setTrening(Trening trening) {
+		this.trening = trening;
+	}
 
-            Trener t = new Trener(rs.getLong("TrenerID"),
-                    rs.getString("ImeTrenera"), rs.getString("PrezimeTrenera"),
-                    rs.getInt("godineIskustva"), rs.getString("telefonTrenera"));
+	/**
+	 * Vraca redni broj ucesca.
+	 * 
+	 * @return redni broj ucesca kao ceo broj
+	 */
+	public int getRbUcesca() {
+		return rbUcesca;
+	}
 
-            Kategorija k = new Kategorija(rs.getLong("KategorijaID"),
-                    rs.getString("NazivKategorije"));
+	/**
+	 * Postavlja vrednost za redni broj ucesca.
+	 * 
+	 * @param rbUcesca nova vrednost za redni broj ucesca
+	 */
+	public void setRbUcesca(int rbUcesca) {
+		this.rbUcesca = rbUcesca;
+	}
 
-            Teren te = new Teren(rs.getLong("TerenID"), rs.getString("NazivTerena"), rs.getDouble("Duzina"),
+	/**
+	 * Vraca napomenu vezanu za eventualnu povredu clana koji ostvaruje ucesce.
+	 * 
+	 * @return napomena ucesca kao String
+	 */
+	public String getNapomena() {
+		return napomena;
+	}
+
+	/**
+	 * Postavlja vrednost napomene vezane za eventualnu povredu clana koji ostvaruje
+	 * ucesce.
+	 * 
+	 * Napomena moze kao vrednost imati i prazan String ukoliko clan nema nikakvu
+	 * povredu.
+	 * 
+	 * @param napomena nova vrednost za napomenu ucesca
+	 */
+	public void setNapomena(String napomena) {
+		this.napomena = napomena;
+	}
+
+	/**
+	 * Vraca clana koji ostvaruje ucesce na treningu.
+	 * 
+	 * @return clan koji ostvaruje ucesce na treningu kao Clan
+	 */
+	public Clan getClan() {
+		return clan;
+	}
+
+	/**
+	 * Postavlja vrednost za clana koji ostvaruje ucesce na treningu.
+	 * 
+	 * @param clan nova vrednost za clana koji ostvaruje ucesce na treningu
+	 */
+	public void setClan(Clan clan) {
+		this.clan = clan;
+	}
+
+	/**
+	 * Vraca String sa svim podacima o ucescu clana na treningu.
+	 * 
+	 * @return svi podaci o ucescu clana na treningu kao String
+	 */
+	@Override
+	public String toString() {
+		return "Ucesce [trening=" + trening + ", rbUcesca=" + rbUcesca + ", napomena=" + napomena + ", clan=" + clan
+				+ "]";
+	}
+
+	@Override
+	public String nazivTabele() {
+		return " Ucesce ";
+	}
+
+	@Override
+	public String alijas() {
+		return " u ";
+	}
+
+	@Override
+	public String join() {
+		return " JOIN TRENING T USING (TRENINGID) " + "JOIN CLAN C USING (CLANID) "
+				+ "JOIN KATEGORIJA K ON (K.KATEGORIJAID = T.KATEGORIJAID) "
+				+ "JOIN TRENER TR ON (TR.TRENERID = T.TRENERID) "
+				+ "JOIN ADMINISTRATOR A ON (A.ADMINISTRATORID = T.ADMINISTRATORID) "
+				+ "JOIN TEREN TE ON (TE.TERENID = T.TERENID) " + "JOIN POZICIJA P ON (P.POZICIJAID = C.POZICIJAID)";
+	}
+
+	@Override
+	public ArrayList<AbstractDomainObject> vratiListu(ResultSet rs) throws SQLException {
+		ArrayList<AbstractDomainObject> lista = new ArrayList<>();
+
+		while (rs.next()) {
+			Administrator a = new Administrator(rs.getLong("AdministratorID"), rs.getString("Ime"),
+					rs.getString("Prezime"), rs.getString("Username"), rs.getString("Password"));
+
+			Trener t = new Trener(rs.getLong("TrenerID"), rs.getString("ImeTrenera"), rs.getString("PrezimeTrenera"),
+					rs.getInt("godineIskustva"), rs.getString("telefonTrenera"));
+
+			Kategorija k = new Kategorija(rs.getLong("KategorijaID"), rs.getString("NazivKategorije"));
+
+			Teren te = new Teren(rs.getLong("TerenID"), rs.getString("NazivTerena"), rs.getDouble("Duzina"),
 					rs.getDouble("Sirina"));
-            
-            Trening tr = new Trening(rs.getLong("treningID"),
-                    rs.getTimestamp("datumVreme"),
-                    rs.getInt("maxBrojClanova"), k, t, te, a, null);
-            
-            Pozicija p = new Pozicija(rs.getLong("PozicijaID"), rs.getString("NazivPozicije"));
 
-            Clan c = new Clan(rs.getLong("clanID"), rs.getString("imeClana"),
-                    rs.getString("prezimeClana"), rs.getString("email"),
-                    rs.getDate("datumRodjenja"), rs.getString("telefonClana"), k, p);
+			Trening tr = new Trening(rs.getLong("treningID"), rs.getTimestamp("datumVreme"),
+					rs.getInt("maxBrojClanova"), k, t, te, a, null);
 
-            Ucesce u = new Ucesce(tr, rs.getInt("rbUcesca"), rs.getString("napomena"), c);
+			Pozicija p = new Pozicija(rs.getLong("PozicijaID"), rs.getString("NazivPozicije"));
 
-            lista.add(u);
-        }
+			Clan c = new Clan(rs.getLong("clanID"), rs.getString("imeClana"), rs.getString("prezimeClana"),
+					rs.getString("email"), rs.getDate("datumRodjenja"), rs.getString("telefonClana"), k, p);
 
-        rs.close();
-        return lista;
-    }
+			Ucesce u = new Ucesce(tr, rs.getInt("rbUcesca"), rs.getString("napomena"), c);
 
-    @Override
-    public String koloneZaInsert() {
-        return " (treningID, rbUcesca, napomena, clanID) ";
-    }
+			lista.add(u);
+		}
 
-    @Override
-    public String vrednostZaPrimarniKljuc() {
-        return " treningID = " + trening.getTreningID();
-    }
+		rs.close();
+		return lista;
+	}
 
-    @Override
-    public String vrednostiZaInsert() {
-        return "'" + trening.getTreningID() + "', '" + rbUcesca + "', "
-                + "'" + napomena + "', '" + clan.getClanID() + "'";
-    }
+	@Override
+	public String koloneZaInsert() {
+		return " (treningID, rbUcesca, napomena, clanID) ";
+	}
 
-    @Override
-    public String vrednostiZaUpdate() {
-        return "";
-    }
+	@Override
+	public String vrednostZaPrimarniKljuc() {
+		return " treningID = " + trening.getTreningID();
+	}
 
-    @Override
-    public String uslov() {
-        return " WHERE T.TRENINGID = " + trening.getTreningID();
-    }
+	@Override
+	public String vrednostiZaInsert() {
+		return "'" + trening.getTreningID() + "', '" + rbUcesca + "', " + "'" + napomena + "', '" + clan.getClanID()
+				+ "'";
+	}
 
-    public Trening getTrening() {
-        return trening;
-    }
+	@Override
+	public String vrednostiZaUpdate() {
+		return "";
+	}
 
-    public void setTrening(Trening trening) {
-        this.trening = trening;
-    }
-
-    public int getRbUcesca() {
-        return rbUcesca;
-    }
-
-    public void setRbUcesca(int rbUcesca) {
-        this.rbUcesca = rbUcesca;
-    }
-
-    public String getNapomena() {
-        return napomena;
-    }
-
-    public void setNapomena(String napomena) {
-        this.napomena = napomena;
-    }
-
-    public Clan getClan() {
-        return clan;
-    }
-
-    public void setClan(Clan clan) {
-        this.clan = clan;
-    }
-
+	@Override
+	public String uslov() {
+		return " WHERE T.TRENINGID = " + trening.getTreningID();
+	}
 }

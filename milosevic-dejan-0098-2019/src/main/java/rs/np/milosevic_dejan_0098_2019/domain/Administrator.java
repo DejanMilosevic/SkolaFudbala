@@ -10,129 +10,221 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
+ * Predstavlja administratora sistema. Ima identifikator, ime, prezime,
+ * korisnicko ime i lozinku.
+ * 
+ * Nasledjuje apstraktnu domensku klasu AbstractDomainObject i implementira sve
+ * njene apstraktne metode.
  *
  * @author Dejan
+ * @since 1.1.0
  */
 public class Administrator extends AbstractDomainObject {
 
-    private Long administratorID;
-    private String ime;
-    private String prezime;
-    private String username;
-    private String password;
+	/**
+	 * Identifikator administratora kao Long
+	 */
+	private Long administratorID;
 
-    public Administrator() {
-    }
+	/**
+	 * Ime administratora kao String
+	 */
+	private String ime;
 
-    public Administrator(Long administratorID, String ime, String prezime, String username, String password) {
-        this.administratorID = administratorID;
-        this.ime = ime;
-        this.prezime = prezime;
-        this.username = username;
-        this.password = password;
-    }
+	/**
+	 * Prezime administratora kao String
+	 */
+	private String prezime;
 
-    public Long getAdministratorID() {
-        return administratorID;
-    }
+	/**
+	 * Korisnicko ime administratora kao String
+	 */
+	private String username;
 
-    public void setAdministratorID(Long administratorID) {
-        this.administratorID = administratorID;
-    }
+	/**
+	 * Lozinka administratora kao String
+	 */
+	private String password;
 
-    public String getUsername() {
-        return username;
-    }
+	/**
+	 * Prazan konstruktor koji postavlja vrednosti atributa administratora na
+	 * podrazumevane.
+	 */
+	public Administrator() {
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	/**
+	 * Konstruktor koji postavlja vrednosti atributa administratora na osnovu unetih
+	 * parametara.
+	 * 
+	 * @param administratorID vrednost za identifikator administratora
+	 * @param ime             vrednost za ime administratora
+	 * @param prezime         vrednost za prezime administratora
+	 * @param username        vrednost za korisnicko ime administratora
+	 * @param password        vrednost za lozinku administratora
+	 */
+	public Administrator(Long administratorID, String ime, String prezime, String username, String password) {
+		this.administratorID = administratorID;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.username = username;
+		this.password = password;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	/**
+	 * Vraca identifikator administratora.
+	 * 
+	 * @return identifikator administratora kao Long
+	 */
+	public Long getAdministratorID() {
+		return administratorID;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	/**
+	 * Postavlja vrednost za identifikator administratora.
+	 * 
+	 * @param administratorID nova vrednost za identifikator administratora
+	 */
+	public void setAdministratorID(Long administratorID) {
+		this.administratorID = administratorID;
+	}
 
-    public String getIme() {
-        return ime;
-    }
+	/**
+	 * Vraca korisnicko ime administratora.
+	 * 
+	 * @return korisnicko ime administratora kao String
+	 */
+	public String getUsername() {
+		return username;
+	}
 
-    public void setIme(String ime) {
-        this.ime = ime;
-    }
+	/**
+	 * Postavlja vrednost za korisnicko ime administratora.
+	 * 
+	 * @param username nova vrednost za korisnicko ime administratora
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getPrezime() {
-        return prezime;
-    }
+	/**
+	 * Vraca lozinku administratora.
+	 * 
+	 * @return lozinka administratora kao String
+	 */
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPrezime(String prezime) {
-        this.prezime = prezime;
-    }
+	/**
+	 * Postavlja vrednost za lozinku administratora.
+	 * 
+	 * @param password nova vrednost za lozinku administratora
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    @Override
-    public String toString() {
-        return ime + " " + prezime;
-    }
+	/**
+	 * Vraca ime administratora.
+	 * 
+	 * @return ime administratora kao String
+	 */
+	public String getIme() {
+		return ime;
+	}
 
-    @Override
-    public String nazivTabele() {
-        return " administrator ";
-    }
+	/**
+	 * Postavlja vrednost za ime administratora.
+	 * 
+	 * @param ime nova vrednost za ime administratora
+	 */
+	public void setIme(String ime) {
+		this.ime = ime;
+	}
 
-    @Override
-    public String alijas() {
-        return " a ";
-    }
+	/**
+	 * Vraca prezime administratora.
+	 * 
+	 * @return prezime administratora kao String
+	 */
+	public String getPrezime() {
+		return prezime;
+	}
 
-    @Override
-    public String join() {
-        return "";
-    }
+	/**
+	 * Postavlja vrednost za prezime administratora.
+	 * 
+	 * @param prezime nova vrednost za prezime administratora
+	 */
+	public void setPrezime(String prezime) {
+		this.prezime = prezime;
+	}
 
-    @Override
-    public ArrayList<AbstractDomainObject> vratiListu(ResultSet rs) throws SQLException {
-        ArrayList<AbstractDomainObject> lista = new ArrayList<>();
+	/**
+	 * Vraca String sa imenom i prezimenom administratora.
+	 * 
+	 * @return ime i prezime administratora kao String
+	 */
+	@Override
+	public String toString() {
+		return ime + " " + prezime;
+	}
 
-        while (rs.next()) {
-            Administrator a = new Administrator(rs.getLong("AdministratorID"),
-                    rs.getString("Ime"), rs.getString("Prezime"),
-                    rs.getString("Username"), rs.getString("Password"));
+	@Override
+	public String nazivTabele() {
+		return " administrator ";
+	}
 
-            lista.add(a);
-        }
+	@Override
+	public String alijas() {
+		return " a ";
+	}
 
-        rs.close();
-        return lista;
-    }
+	@Override
+	public String join() {
+		return "";
+	}
 
-    @Override
-    public String koloneZaInsert() {
-        return " (Ime, Prezime, Username, Password) ";
-    }
+	@Override
+	public ArrayList<AbstractDomainObject> vratiListu(ResultSet rs) throws SQLException {
+		ArrayList<AbstractDomainObject> lista = new ArrayList<>();
 
-    @Override
-    public String vrednostZaPrimarniKljuc() {
-        return " AdministratorID = " + administratorID;
-    }
+		while (rs.next()) {
+			Administrator a = new Administrator(rs.getLong("AdministratorID"), rs.getString("Ime"),
+					rs.getString("Prezime"), rs.getString("Username"), rs.getString("Password"));
 
-    @Override
-    public String vrednostiZaInsert() {
-        return "'" + ime + "', '" + prezime + "', "
-                + "'" + username + "', '" + password + "'";
-    }
+			lista.add(a);
+		}
 
-    @Override
-    public String vrednostiZaUpdate() {
-        return " Ime = '" + ime + "', Prezime = '" + prezime + "', "
-                + "Username = '" + username + "', Password = '" + password + "' ";
-    }
+		rs.close();
+		return lista;
+	}
 
-    @Override
-    public String uslov() {
-        return "";
-    }
+	@Override
+	public String koloneZaInsert() {
+		return " (Ime, Prezime, Username, Password) ";
+	}
+
+	@Override
+	public String vrednostZaPrimarniKljuc() {
+		return " AdministratorID = " + administratorID;
+	}
+
+	@Override
+	public String vrednostiZaInsert() {
+		return "'" + ime + "', '" + prezime + "', " + "'" + username + "', '" + password + "'";
+	}
+
+	@Override
+	public String vrednostiZaUpdate() {
+		return " Ime = '" + ime + "', Prezime = '" + prezime + "', " + "Username = '" + username + "', Password = '"
+				+ password + "' ";
+	}
+
+	@Override
+	public String uslov() {
+		return "";
+	}
 
 }

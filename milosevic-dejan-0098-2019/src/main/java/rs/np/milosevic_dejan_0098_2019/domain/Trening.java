@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rs.np.milosevic_dejan_0098_2019.domain;
 
 import java.sql.ResultSet;
@@ -20,7 +15,7 @@ import java.util.Date;
  * Nasledjuje apstraktnu domensku klasu AbstractDomainObject i implementira sve
  * njene apstraktne metode.
  * 
- * @author Dejan
+ * @author Dejan Milosevic
  * @since 1.1.0
  */
 public class Trening extends AbstractDomainObject {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Nasledjuje apstraktnu domensku klasu AbstractDomainObject i implementira sve
  * njene apstraktne metode.
  * 
- * @author Dejan
+ * @author Dejan Milosevic
  * @since 1.1.0
  */
 public class Teren extends AbstractDomainObject {

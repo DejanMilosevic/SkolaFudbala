@@ -8,7 +8,8 @@ import java.util.ArrayList;
  * Predstavlja apstraktnu domensku klasu koju nasledjuju sve domenske klase.
  * Sadrzi apstraktne metode koje svaka od domenskih klasa implementira.
  *
- * @author Dejan since 1.1.0
+ * @author Dejan Milosevic 
+ * @since 1.1.0
  */
 public abstract class AbstractDomainObject {
 

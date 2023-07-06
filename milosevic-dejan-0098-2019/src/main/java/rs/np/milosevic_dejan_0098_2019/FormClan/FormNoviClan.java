@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rs.np.milosevic_dejan_0098_2019.FormClan;
 
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
@@ -26,11 +21,20 @@ import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
 
 /**
- *
- * @author Dejan
+ * Predstavlja formu koja omogucava dodavanje novog clana u bazu podataka.
+ * 
+ * @author Dejan Milosevic
+ * @since 1.1.0
  */
 public class FormNoviClan extends javax.swing.JDialog {
 
+	/**
+	 * Konstruktor koji kreira formu. Inicijalizuje komponente forme, i postavlja
+	 * njenu lokaciju i naslov.
+	 * 
+	 * @param parent forma iz koje se data otvara
+	 * @param modal modalitet
+	 */
     public FormNoviClan(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -276,6 +280,10 @@ public class FormNoviClan extends javax.swing.JDialog {
     private JComboBox cmbPozicija;
     // End of variables declaration//GEN-END:variables
 
+    /**
+	 * Poziva sistemsku operaciju za ucitavanje svih kategorija iz baze podataka i
+	 * popunjava combo box ucitanim vrednostima.
+	 */
     private void popuniKategorije() {
 
         try {
@@ -302,7 +310,10 @@ public class FormNoviClan extends javax.swing.JDialog {
 		return cmbPozicija;
 	}
 
-
+	/**
+	 * Poziva sistemsku operaciju za ucitavanje svih pozicija iz baze podataka i
+	 * popunjava combo box ucitanim vrednostima.
+	 */
     public void popuniPozicije() {
     	try {
         	SOGetAllPozicija so = new SOGetAllPozicija();

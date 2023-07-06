@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rs.np.milosevic_dejan_0098_2019.models;
 
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
@@ -16,95 +11,159 @@ import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *
- * @author Dejan
+ * Predstavlja klasu koja kreira model tabele ucesca clanova na izabranom
+ * treningu. Koristi se pri dodavanju ili izmeni treninga u bazi podataka.
+ * 
+ * @author Dejan Milosevic
+ * @since 1.1.0
  */
 public class TableModelUcesca extends AbstractTableModel {
 
-    private ArrayList<Ucesce> lista;
-    private String[] kolone = {"Rb", "Clan", "Napomena"};
-    private int rb = 0;
+	/**
+	 * Lista sa ucescima clanova na izabranom treningu
+	 */
+	private ArrayList<Ucesce> lista;
 
-    public TableModelUcesca() {
-        lista = new ArrayList<>();
-    }
+	/**
+	 * Nazivi kolona u tabeli kao String
+	 */
+	private String[] kolone = { "Rb", "Clan", "Napomena" };
 
-    public TableModelUcesca(Trening t) {
-        try {
-        	SOGetAllUcesce so = new SOGetAllUcesce();
+	/**
+	 * Redni broj ucesca kao ceo broj
+	 */
+	private int rb = 0;
 
-            Ucesce u = new Ucesce();
-            u.setTrening(t);
+	/**
+	 * Prazan konstruktor koji inicijalizuje listu sa ucescima.
+	 */
+	public TableModelUcesca() {
+		lista = new ArrayList<>();
+	}
 
-            so.templateExecute(u);
-            
-            lista = so.getLista();
-        } catch (Exception ex) {
-            Logger.getLogger(TableModelUcesca.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+	/**
+	 * Konstruktor koji poziva sistemsku operaciju za ucitavanje svih ucesca clanova
+	 * na treningu unetog kao parametar.
+	 * 
+	 * @param t trening iz baze podataka za koji se ucitavaju sva ucesca
+	 */
+	public TableModelUcesca(Trening t) {
+		try {
+			SOGetAllUcesce so = new SOGetAllUcesce();
 
-    @Override
-    public int getRowCount() {
-        return lista.size();
-    }
+			Ucesce u = new Ucesce();
+			u.setTrening(t);
 
-    @Override
-    public int getColumnCount() {
-        return kolone.length;
-    }
+			so.templateExecute(u);
 
-    @Override
-    public String getColumnName(int i) {
-        return kolone[i];
-    }
+			lista = so.getLista();
+		} catch (Exception ex) {
+			Logger.getLogger(TableModelUcesca.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
-    @Override
-    public Object getValueAt(int row, int column) {
-        Ucesce u = lista.get(row);
+	/**
+	 * Vraca broj redova u tabeli.
+	 */
+	@Override
+	public int getRowCount() {
+		return lista.size();
+	}
 
-        switch (column) {
-            case 0:
-                return u.getRbUcesca();
-            case 1:
-                return u.getClan();
-            case 2:
-                return u.getNapomena();
+	/**
+	 * Vraca broj kolona u tabeli.
+	 */
+	@Override
+	public int getColumnCount() {
+		return kolone.length;
+	}
 
-            default:
-                return null;
-        }
-    }
+	/**
+	 * Vraca naziv i-te kolone tabele.
+	 * 
+	 * @param i broj kolone tabele
+	 */
+	@Override
+	public String getColumnName(int i) {
+		return kolone[i];
+	}
 
-    public void dodajUcesce(Ucesce u) {
-        rb = lista.size();
-        u.setRbUcesca(++rb);
-        lista.add(u);
-        fireTableDataChanged();
-    }
+	/**
+	 * Vraca vrednost polja u tabeli.
+	 * 
+	 * @param row red tabele u kojoj se nalazi polje
+	 * @param column kolona tabele u kojoj se nalazi polje
+	 * 
+	 * @return vrednost polja u tabeli kao Object
+	 */
+	@Override
+	public Object getValueAt(int row, int column) {
+		Ucesce u = lista.get(row);
 
-    public void obrisiUcesce(int row) {
-        lista.remove(row);
+		switch (column) {
+		case 0:
+			return u.getRbUcesca();
+		case 1:
+			return u.getClan();
+		case 2:
+			return u.getNapomena();
 
-        rb = 0;
-        for (Ucesce ucesce : lista) {
-            ucesce.setRbUcesca(++rb);
-        }
+		default:
+			return null;
+		}
+	}
 
-        fireTableDataChanged();
-    }
+	/**
+	 * Dodaje ucesce u tabelu i azurira je.
+	 * 
+	 * @param u ucesce koje se dodaje u tabelu
+	 */
+	public void dodajUcesce(Ucesce u) {
+		rb = lista.size();
+		u.setRbUcesca(++rb);
+		lista.add(u);
+		fireTableDataChanged();
+	}
 
-    public boolean postojiClan(Clan clan) {
-        for (Ucesce ucesce : lista) {
-            if (ucesce.getClan().getClanID().equals(clan.getClanID())) {
-                return true;
-            }
-        }
-        return false;
-    }
+	/**
+	 * Brise ucesce iz tabele i azurira je.
+	 * 
+	 * @param row red tabele ucesca koji se brise
+	 */
+	public void obrisiUcesce(int row) {
+		lista.remove(row);
 
-    public ArrayList<Ucesce> getLista() {
-        return lista;
-    }
+		rb = 0;
+		for (Ucesce ucesce : lista) {
+			ucesce.setRbUcesca(++rb);
+		}
+
+		fireTableDataChanged();
+	}
+
+	/**
+	 * Proverava da li u tabeli ucesca postoji clan koji je unet kao parametar.
+	 * 
+	 * @param clan clan cije se ucesce na izabranom treningu proverava
+	 * 
+	 * @return true - ako postoji uneti clan u tabeli ucesca, false - ako ne postoji
+	 */
+	public boolean postojiClan(Clan clan) {
+		for (Ucesce ucesce : lista) {
+			if (ucesce.getClan().getClanID().equals(clan.getClanID())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Vraca listu ucesca na izabranom treningu.
+	 * 
+	 * @return lista ucesca na izabranom treningu
+	 */
+	public ArrayList<Ucesce> getLista() {
+		return lista;
+	}
 
 }

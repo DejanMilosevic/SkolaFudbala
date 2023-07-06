@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rs.np.milosevic_dejan_0098_2019.forme;
 
 import rs.np.milosevic_dejan_0098_2019.domain.Administrator;
@@ -11,13 +6,16 @@ import rs.np.milosevic_dejan_0098_2019.so.login.SOLogin;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Dejan
+ * Predstavlja formu preko koje se administrator prijavljuje na sistem.
+ *  
+ * @author Dejan Milosevic
+ * @since 1.1.0
  */
 public class LoginForma extends javax.swing.JFrame {
 
     /**
-     * Creates new form Login
+     * Konstruktor koji kreira formu.
+     * Inicijalizuje komponente forme, i postavlja njenu lokaciju i naslov.
      */
     public LoginForma() {
         initComponents();

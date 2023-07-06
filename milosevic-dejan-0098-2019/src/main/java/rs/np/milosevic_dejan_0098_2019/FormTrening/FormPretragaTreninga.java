@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rs.np.milosevic_dejan_0098_2019.FormTrening;
 
 import rs.np.milosevic_dejan_0098_2019.domain.Trening;
@@ -10,11 +5,20 @@ import javax.swing.JOptionPane;
 import rs.np.milosevic_dejan_0098_2019.models.TableModelTreninzi;
 
 /**
- *
- * @author Dejan
+ * Predstavlja formu koja omogucava pretragu treninga iz baze podataka.
+ * 
+ * @author Dejan Milosevic
+ * @since 1.1.0
  */
 public class FormPretragaTreninga extends javax.swing.JDialog {
 
+	/**
+	 * Konstruktor koji kreira formu. Inicijalizuje komponente forme, i postavlja
+	 * njenu lokaciju i naslov.
+	 * 
+	 * @param parent forma iz koje se data otvara
+	 * @param modal  modalitet
+	 */
     public FormPretragaTreninga(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -138,6 +142,10 @@ public class FormPretragaTreninga extends javax.swing.JDialog {
     private javax.swing.JTextField txtPretraga;
     // End of variables declaration//GEN-END:variables
 
+    /**
+	 * Poziva tabelu treninga da se azurira nakon sto je odredjeni trening izmenjen ili
+	 * obrisan iz baze podataka.
+	 */
     void refreshTable() {
         TableModelTreninzi tm = (TableModelTreninzi) tblTreninzi.getModel();
         tm.refreshTable();

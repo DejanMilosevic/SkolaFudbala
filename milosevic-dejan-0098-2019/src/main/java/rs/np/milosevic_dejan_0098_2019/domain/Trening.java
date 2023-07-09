@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Predstavlja trening koji ce se odrzati. Ima identifikator, datum i vreme kada
@@ -248,7 +249,26 @@ public class Trening extends AbstractDomainObject {
 				+ ", kategorija=" + kategorija + ", trener=" + trener + ", teren=" + teren + ", administrator="
 				+ administrator + ", ucesca=" + ucesca + "]";
 	}
-	
+
+	/**
+	 * Poredi dva treninga na osnovu datuma i vremena odrzavanja
+	 * 
+	 * @param obj drugi trening
+	 * 
+	 * @return true ako su datumi i vremena odrzavanja isti, a false inace
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Trening other = (Trening) obj;
+		return Objects.equals(datumVreme, other.datumVreme);
+	}
+
 	@Override
 	public String nazivTabele() {
 		return " Trening ";

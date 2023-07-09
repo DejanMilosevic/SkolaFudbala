@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Predstavlja clana skole fudbala. 
@@ -246,7 +247,26 @@ public class Clan extends AbstractDomainObject {
         return " Clan ";
     }
 
-    @Override
+    /**
+	 * Poredi dva clana na osnovu e-mail adrese ili broja telefona
+	 * 
+	 * @param obj drugi clan
+	 * 
+	 * @return true ako su e-mail adrese ili brojevi telefona isti, a false inace
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Clan other = (Clan) obj;
+		return Objects.equals(email, other.email) || Objects.equals(telefonClana, other.telefonClana);
+	}
+
+	@Override
     public String alijas() {
         return " c ";
     }

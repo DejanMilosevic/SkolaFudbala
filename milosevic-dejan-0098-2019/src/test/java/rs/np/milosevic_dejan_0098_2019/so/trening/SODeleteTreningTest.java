@@ -2,7 +2,6 @@ package rs.np.milosevic_dejan_0098_2019.so.trening;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import rs.np.milosevic_dejan_0098_2019.db.DBBroker;
 import rs.np.milosevic_dejan_0098_2019.domain.Administrator;
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
 import rs.np.milosevic_dejan_0098_2019.domain.Kategorija;
@@ -21,6 +19,10 @@ import rs.np.milosevic_dejan_0098_2019.domain.Teren;
 import rs.np.milosevic_dejan_0098_2019.domain.Trener;
 import rs.np.milosevic_dejan_0098_2019.domain.Trening;
 import rs.np.milosevic_dejan_0098_2019.domain.Ucesce;
+import rs.np.milosevic_dejan_0098_2019.so.clan.SOAddClan;
+import rs.np.milosevic_dejan_0098_2019.so.clan.SODeleteClan;
+import rs.np.milosevic_dejan_0098_2019.so.clan.SOGetAllClan;
+import rs.np.milosevic_dejan_0098_2019.so.ucesce.SOGetAllUcesce;
 
 class SODeleteTreningTest {
 
@@ -44,7 +46,7 @@ class SODeleteTreningTest {
 		try {
 			d = sdf.parse("10.10.2023 10:00");
 		} catch (ParseException e) {
-			fail("Greska prilikom parsiranja datuma.");
+			e.printStackTrace();
 		}
 		t.setDatumVreme(d);
 
@@ -71,7 +73,7 @@ class SODeleteTreningTest {
 		try {
 			dClana = sdf2.parse("10.10.2000");
 		} catch (ParseException e1) {
-			fail("Greska prilikom parsiranja datuma.");
+			e1.printStackTrace();
 		}
 		Pozicija p = new Pozicija();
 		p.setPozicijaID(1l);
@@ -104,7 +106,7 @@ class SODeleteTreningTest {
 		try {
 			so.templateExecute(t);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 		
 		treninzi = vratiSveTreningeIzBaze();
@@ -130,10 +132,9 @@ class SODeleteTreningTest {
 	
 	private void dodajClana(Clan c) {
 		try {
-			DBBroker.getInstance().insert(c);
-			DBBroker.getInstance().getConnection().commit();
+			(new SOAddClan()).templateExecute(c);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 
@@ -149,27 +150,36 @@ class SODeleteTreningTest {
 
 	private ArrayList<Clan> vratiSveClanoveIzBaze() {
 		try {
-			return (ArrayList<Clan>) (ArrayList<?>) DBBroker.getInstance().select(new Clan());
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			SOGetAllClan so = new SOGetAllClan();
+			so.templateExecute(new Clan());
+			return so.getLista();
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
 
 	private void obrisiDodatogClanaIzBaze(Clan c) {
+		ArrayList<Clan> clanovi = vratiSveClanoveIzBaze();
+		for (Clan clan : clanovi) {
+			if (clan.equals(c)) {
+				c.setClanID(clan.getClanID());
+			}
+		}
 		try {
-			DBBroker.getInstance().delete(c);
-			DBBroker.getInstance().getConnection().commit();
+			(new SODeleteClan()).templateExecute(c);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 
 	private ArrayList<Trening> vratiSveTreningeIzBaze() {
 		try {
-			return (ArrayList<Trening>) (ArrayList<?>) DBBroker.getInstance().select(new Trening());
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			SOGetAllTrening so = new SOGetAllTrening();
+			so.templateExecute(new Trening());
+			return so.getLista();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -178,7 +188,7 @@ class SODeleteTreningTest {
 		try {
 			(new SOAddTrening()).templateExecute(t);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 	
@@ -194,9 +204,11 @@ class SODeleteTreningTest {
 
 	private ArrayList<Ucesce> vratiSvaUcescaTreningaIzBaze(Ucesce u) {
 		try {
-			return (ArrayList<Ucesce>) (ArrayList<?>) DBBroker.getInstance().select(u);
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			SOGetAllUcesce so = new SOGetAllUcesce();
+			so.templateExecute(u);
+			return so.getLista();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

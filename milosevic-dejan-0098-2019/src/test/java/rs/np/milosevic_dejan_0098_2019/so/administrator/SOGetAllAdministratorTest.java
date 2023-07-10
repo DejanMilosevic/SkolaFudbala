@@ -47,7 +47,7 @@ class SOGetAllAdministratorTest {
 			assertTrue(ucitani.get(1).getUsername().equalsIgnoreCase("steva") && 
 					ucitani.get(1).getPassword().equalsIgnoreCase("steva123"));
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 

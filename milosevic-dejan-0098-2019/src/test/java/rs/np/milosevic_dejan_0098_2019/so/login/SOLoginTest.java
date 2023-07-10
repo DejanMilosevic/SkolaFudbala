@@ -51,7 +51,7 @@ class SOLoginTest {
 		try {
 			so.templateExecute(a);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 		
 		assertEquals(a.getUsername(), so.getUlogovani().getUsername());

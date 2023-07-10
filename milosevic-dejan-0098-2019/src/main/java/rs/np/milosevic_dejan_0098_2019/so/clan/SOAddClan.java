@@ -4,7 +4,6 @@ import rs.np.milosevic_dejan_0098_2019.db.DBBroker;
 import rs.np.milosevic_dejan_0098_2019.domain.AbstractDomainObject;
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ public class SOAddClan extends AbstractSO {
 	public String serijalizujJSON(Clan clan){
 		String json = "";
 		
-		try(FileWriter out = new FileWriter("clan.json")){
+		try(FileWriter out = new FileWriter("src/test/resources/clan.json")){
 			Gson gson = new Gson();
 			
 			json = gson.toJson(clan);

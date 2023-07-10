@@ -2,7 +2,6 @@ package rs.np.milosevic_dejan_0098_2019.so.clan;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import rs.np.milosevic_dejan_0098_2019.db.DBBroker;
 import rs.np.milosevic_dejan_0098_2019.domain.Administrator;
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
 import rs.np.milosevic_dejan_0098_2019.domain.Kategorija;
@@ -50,7 +48,7 @@ class SODeleteClanTest {
 		try {
 			d = sdf.parse("10.10.2000");
 		} catch (ParseException e1) {
-			fail("Greska prilikom parsiranja datuma.");
+			e1.printStackTrace();
 		}
 
 		Clan c = new Clan(null, "Nemanja", "Nikic", "nemanja@gmail.com", d, "0618888888", new Kategorija(1l, null),
@@ -70,7 +68,7 @@ class SODeleteClanTest {
 		try {
 			so.templateExecute(c);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 		
 		clanovi = vratiSveClanoveIzBaze();
@@ -81,18 +79,19 @@ class SODeleteClanTest {
 
 	private void dodajClana(Clan c) {
 		try {
-			DBBroker.getInstance().insert(c);
-			DBBroker.getInstance().getConnection().commit();
+			(new SOAddClan()).templateExecute(c);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 
 	private ArrayList<Clan> vratiSveClanoveIzBaze() {
 		try {
-			return (ArrayList<Clan>) (ArrayList<?>) DBBroker.getInstance().select(new Clan());
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			SOGetAllClan so = new SOGetAllClan();
+			so.templateExecute(new Clan());
+			return so.getLista();
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

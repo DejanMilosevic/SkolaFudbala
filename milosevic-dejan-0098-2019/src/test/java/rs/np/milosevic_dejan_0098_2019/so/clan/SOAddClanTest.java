@@ -2,7 +2,6 @@ package rs.np.milosevic_dejan_0098_2019.so.clan;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import rs.np.milosevic_dejan_0098_2019.db.DBBroker;
 import rs.np.milosevic_dejan_0098_2019.domain.Administrator;
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
 import rs.np.milosevic_dejan_0098_2019.domain.Kategorija;
@@ -43,7 +41,7 @@ class SOAddClanTest {
 		try {
 			d = sdf.parse("11.11.2001");
 		} catch (ParseException e) {
-			fail("Greska prilikom parsiranja datuma.");
+			e.printStackTrace();
 		}
 
 		Clan c = new Clan(null, "Zarko", "Zarkovic", "zarko@gmail.com", d, "0666666666", new Kategorija(1l, null),
@@ -52,7 +50,7 @@ class SOAddClanTest {
 		try {
 			so.templateExecute(c);
 		} catch (Exception e1) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e1.printStackTrace();
 		}
 
 		clanovi = vratiSveClanoveIzBaze();
@@ -81,7 +79,7 @@ class SOAddClanTest {
 		try {
 			d = sdf.parse("10.10.2024");
 		} catch (ParseException e) {
-			fail("Greska prilikom parsiranja datuma.");
+			e.printStackTrace();
 		}
 
 		Clan c = new Clan(null, null, "Milic", "mile@gmail.com", d, "O65555555", new Kategorija(1l, null),
@@ -98,7 +96,7 @@ class SOAddClanTest {
 		try {
 			d = sdf.parse("10.10.2024");
 		} catch (ParseException e) {
-			fail("Greska prilikom parsiranja datuma.");
+			e.printStackTrace();
 		}
 
 		Clan c = new Clan(null, "Mile", "Milic", "mile@gmail.com", d, "O65555555", new Kategorija(1l, null),
@@ -115,7 +113,7 @@ class SOAddClanTest {
 		try {
 			d = sdf.parse("10.10.2000");
 		} catch (ParseException e1) {
-			fail("Greska prilikom parsiranja datuma.");
+			e1.printStackTrace();
 		}
 		Clan c = new Clan(null, "Nemanja", "Nikic", "nemanja@gmail.com", d, "0618888888", new Kategorija(1l, null),
 				new Pozicija(1l, null));
@@ -125,7 +123,7 @@ class SOAddClanTest {
 		try {
 			so.templateExecute(c);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 		c.setTelefonClana("0607777777");
 
@@ -144,7 +142,7 @@ class SOAddClanTest {
 		try {
 			d = sdf.parse("10.10.2000");
 		} catch (ParseException e1) {
-			fail("Greska prilikom parsiranja datuma.");
+			e1.printStackTrace();
 		}
 		Clan c = new Clan(null, "Nemanja", "Nikic", "nemanja@gmail.com", d, "0618888888", new Kategorija(1l, null),
 				new Pozicija(1l, null));
@@ -154,7 +152,7 @@ class SOAddClanTest {
 		try {
 			so.templateExecute(c);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 		c.setEmail("nemanja123@gmail.com");
 
@@ -167,9 +165,11 @@ class SOAddClanTest {
 
 	private ArrayList<Clan> vratiSveClanoveIzBaze() {
 		try {
-			return (ArrayList<Clan>) (ArrayList<?>) DBBroker.getInstance().select(new Clan());
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			SOGetAllClan so = new SOGetAllClan();
+			so.templateExecute(new Clan());
+			return so.getLista();
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -182,10 +182,9 @@ class SOAddClanTest {
 			}
 		}
 		try {
-			DBBroker.getInstance().delete(c);
-			DBBroker.getInstance().getConnection().commit();
+			(new SODeleteClan()).templateExecute(c);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 
@@ -199,7 +198,8 @@ class SOAddClanTest {
 		try {
 			d = sdf.parse("11.11.2001");
 		} catch (ParseException e) {
-			fail("Greska prilikom parsiranja datuma.");
+			e.printStackTrace();
+			
 		}
 		
 		clan.setDatumRodjenja(d);

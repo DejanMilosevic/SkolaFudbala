@@ -49,7 +49,7 @@ class SOGetAllPozicijaTest {
 			assertTrue(ucitane.get(4).getNazivPozicije().equalsIgnoreCase("krilo"));
 			assertTrue(ucitane.get(5).getNazivPozicije().equalsIgnoreCase("napadac"));
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 

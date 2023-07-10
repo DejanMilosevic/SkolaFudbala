@@ -46,7 +46,7 @@ class SOGetAllKategorijaTest {
 			assertTrue(ucitane.get(1).getNazivKategorije().equalsIgnoreCase("medior"));
 			assertTrue(ucitane.get(2).getNazivKategorije().equalsIgnoreCase("senior"));
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 

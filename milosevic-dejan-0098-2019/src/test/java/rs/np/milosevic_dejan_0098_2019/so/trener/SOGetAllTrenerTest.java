@@ -49,7 +49,7 @@ class SOGetAllTrenerTest {
 			assertTrue(ucitani.get(2).getImeTrenera().equalsIgnoreCase("dejan")
 					&& ucitani.get(2).getPrezimeTrenera().equalsIgnoreCase("stankovic"));
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 

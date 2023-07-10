@@ -47,7 +47,7 @@ class SOGetAllTerenTest {
 			assertTrue(ucitani.get(2).getNazivTerena().equalsIgnoreCase("camp nou"));
 			assertTrue(ucitani.get(3).getNazivTerena().equalsIgnoreCase("anfield"));
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 	}
 }

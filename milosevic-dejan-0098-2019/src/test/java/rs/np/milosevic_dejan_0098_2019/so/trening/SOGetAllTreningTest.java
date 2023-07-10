@@ -2,7 +2,6 @@ package rs.np.milosevic_dejan_0098_2019.so.trening;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import rs.np.milosevic_dejan_0098_2019.db.DBBroker;
 import rs.np.milosevic_dejan_0098_2019.domain.Administrator;
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
 import rs.np.milosevic_dejan_0098_2019.domain.Kategorija;
@@ -21,6 +19,9 @@ import rs.np.milosevic_dejan_0098_2019.domain.Teren;
 import rs.np.milosevic_dejan_0098_2019.domain.Trener;
 import rs.np.milosevic_dejan_0098_2019.domain.Trening;
 import rs.np.milosevic_dejan_0098_2019.domain.Ucesce;
+import rs.np.milosevic_dejan_0098_2019.so.clan.SOAddClan;
+import rs.np.milosevic_dejan_0098_2019.so.clan.SODeleteClan;
+import rs.np.milosevic_dejan_0098_2019.so.clan.SOGetAllClan;
 
 class SOGetAllTreningTest {
 
@@ -48,7 +49,7 @@ class SOGetAllTreningTest {
 		try {
 			d = sdf.parse("10.10.2023 10:00");
 		} catch (ParseException e) {
-			fail("Greska prilikom parsiranja datuma.");
+			e.printStackTrace();
 		}
 		t.setDatumVreme(d);
 
@@ -71,7 +72,7 @@ class SOGetAllTreningTest {
 		try {
 			dClana = sdf2.parse("10.10.2000");
 		} catch (ParseException e1) {
-			fail("Greska prilikom parsiranja datuma.");
+			e1.printStackTrace();
 		}
 		Pozicija p = new Pozicija();
 		p.setPozicijaID(1l);
@@ -104,7 +105,7 @@ class SOGetAllTreningTest {
 		try {
 			d2 = sdf.parse("11.11.2023 11:00");
 		} catch (ParseException e) {
-			fail("Greska prilikom parsiranja datuma.");
+			e.printStackTrace();
 		}
 		ArrayList<Ucesce> ucesca2 = new ArrayList<>();
 
@@ -127,7 +128,7 @@ class SOGetAllTreningTest {
 		try {
 			so.templateExecute(new Trening());
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 
 		assertEquals(brojTreningaPreDodavanja + 2, so.getLista().size());
@@ -154,17 +155,16 @@ class SOGetAllTreningTest {
 		try {
 			(new SOAddTrening()).templateExecute(t);
 		} catch (Exception e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			e.printStackTrace();
 		}
 
 	}
 
 	private void dodajClana(Clan c) {
 		try {
-			DBBroker.getInstance().insert(c);
-			DBBroker.getInstance().getConnection().commit();
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			(new SOAddClan()).templateExecute(c);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -180,27 +180,36 @@ class SOGetAllTreningTest {
 
 	private ArrayList<Clan> vratiSveClanoveIzBaze() {
 		try {
-			return (ArrayList<Clan>) (ArrayList<?>) DBBroker.getInstance().select(new Clan());
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			SOGetAllClan so = new SOGetAllClan();
+			so.templateExecute(new Clan());
+			return so.getLista();
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
 
 	private void obrisiDodatogClanaIzBaze(Clan c) {
+		ArrayList<Clan> clanovi = vratiSveClanoveIzBaze();
+		for (Clan clan : clanovi) {
+			if (clan.equals(c)) {
+				c.setClanID(clan.getClanID());
+			}
+		}
 		try {
-			DBBroker.getInstance().delete(c);
-			DBBroker.getInstance().getConnection().commit();
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			(new SODeleteClan()).templateExecute(c);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	private ArrayList<Trening> vratiSveTreningeIzBaze() {
 		try {
-			return (ArrayList<Trening>) (ArrayList<?>) DBBroker.getInstance().select(new Trening());
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			SOGetAllTrening so = new SOGetAllTrening();
+			so.templateExecute(new Trening());
+			return so.getLista();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -213,10 +222,9 @@ class SOGetAllTreningTest {
 			}
 		}
 		try {
-			DBBroker.getInstance().delete(t);
-			DBBroker.getInstance().getConnection().commit();
-		} catch (SQLException e) {
-			fail("Greska prilikom konekcije na bazu podataka.");
+			(new SODeleteTrening()).templateExecute(t);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

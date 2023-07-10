@@ -1,0 +1,1 @@
+DELETE FROM  Clan  WHERE  clanID = 52

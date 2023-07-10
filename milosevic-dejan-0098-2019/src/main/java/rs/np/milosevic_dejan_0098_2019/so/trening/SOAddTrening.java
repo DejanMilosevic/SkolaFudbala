@@ -84,7 +84,5 @@ public class SOAddTrening extends AbstractSO {
 			ucesce.setTrening(trening);
 			DBBroker.getInstance().insert(ucesce);
 		}
-
 	}
-
 }

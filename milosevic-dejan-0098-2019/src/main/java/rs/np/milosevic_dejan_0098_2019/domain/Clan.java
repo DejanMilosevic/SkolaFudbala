@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Predstavlja clana skole fudbala. 
  * Ima identifikator, ime, prezime, e-mail, datum rodjenja, broj telefona, kategoriju i poziciju na terenu.
@@ -21,41 +23,46 @@ public class Clan extends AbstractDomainObject {
 	/**
 	 * Identifikator clana kao Long
 	 */
-    private Long clanID;
+    private transient Long clanID;
     
     /**
      * Ime clana kao String
      */
+    @SerializedName("Ime")
     private String imeClana;
     
     /**
      * Prezime clana kao String
      */
+    @SerializedName("Prezime")
     private String prezimeClana;
     
     /**
      * E-mail clana kao String
      */
-    private String email;
+    private transient String email;
     
     /**
      * Datum rodjenja clana kao Date
      */
+    @SerializedName("Datum rodjenja")
     private Date datumRodjenja;
     
     /**
      * Broj telefona clana kao String
      */
-    private String telefonClana;
+    private transient String telefonClana;
     
     /**
      * Kategorija clana kao Kategorija
      */
+    @SerializedName("Kategorija")
     private Kategorija kategorija;
     
     /**
      * Pozicija na terenu clana kao Pozicija
      */
+    @SerializedName("Pozicija na terenu")
     private Pozicija pozicija;
     
     /**

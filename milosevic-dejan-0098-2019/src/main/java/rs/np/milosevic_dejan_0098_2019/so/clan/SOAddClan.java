@@ -3,8 +3,15 @@ package rs.np.milosevic_dejan_0098_2019.so.clan;
 import rs.np.milosevic_dejan_0098_2019.db.DBBroker;
 import rs.np.milosevic_dejan_0098_2019.domain.AbstractDomainObject;
 import rs.np.milosevic_dejan_0098_2019.domain.Clan;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.google.gson.Gson;
+
 import rs.np.milosevic_dejan_0098_2019.so.AbstractSO;
 
 /**
@@ -30,7 +37,6 @@ public class SOAddClan extends AbstractSO {
 
 		Clan c = (Clan) ado;
 
-		System.out.println(c.getKategorija().getNazivKategorije());
 		if (!c.getDatumRodjenja().before(new Date())) {
 			throw new Exception("Datum rodjenja mora biti u proslosti!");
 		}
@@ -54,6 +60,29 @@ public class SOAddClan extends AbstractSO {
 	@Override
 	protected void execute(AbstractDomainObject ado) throws Exception {
 		DBBroker.getInstance().insert(ado);
+	}
+
+	/**
+	 * Serijalizuje unetog clana u JSON format.
+	 * 
+	 * @param clan koji se serijalizuje
+	 * 
+	 * @return String sa unetim clanom u JSON formatu.
+	 */
+	public String serijalizujJSON(Clan clan){
+		String json = "";
+		
+		try(FileWriter out = new FileWriter("clan.json")){
+			Gson gson = new Gson();
+			
+			json = gson.toJson(clan);
+			
+			out.write(json);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return json;
 	}
 
 }

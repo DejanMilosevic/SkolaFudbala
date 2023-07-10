@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Predstavlja kategoriju treninga kojoj pripada clan. Ima identifikator i
  * naziv.
@@ -19,11 +21,12 @@ public class Kategorija extends AbstractDomainObject {
 	/**
 	 * Predstavlja identifikator kategorije kao Long
 	 */
-	private Long kategorijaID;
+	private transient Long kategorijaID;
 
 	/**
 	 * Predstavlja naziv kategorije kao String
 	 */
+	@SerializedName("Naziv")
 	private String nazivKategorije;
 
 	/**

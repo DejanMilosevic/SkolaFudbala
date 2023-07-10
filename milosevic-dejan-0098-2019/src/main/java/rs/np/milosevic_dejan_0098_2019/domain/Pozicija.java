@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Predstavlja poziciju clana na terenu. Ima identifikator i naziv.
  * 
@@ -18,11 +20,12 @@ public class Pozicija extends AbstractDomainObject {
 	/**
 	 * Predstavlja identifikator pozicije kao Long
 	 */
-	private Long pozicijaID;
+	private transient Long pozicijaID;
 
 	/**
 	 * Predstavlja naziv pozicije kao String
 	 */
+	@SerializedName("Naziv")
 	private String nazivPozicije;
 
 	/**

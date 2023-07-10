@@ -31,12 +31,12 @@ class SOAddClanTest {
 	void tearDown() throws Exception {
 		so = null;
 	}
-	
+
 	@Test
 	void testUspesnoDodatClan() {
 		ArrayList<Clan> clanovi = vratiSveClanoveIzBaze();
 		int brojClanovaUBaziPreDodavanja = clanovi.size();
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 		Date d = null;
@@ -72,7 +72,7 @@ class SOAddClanTest {
 	void testNeuspesnaValidacijaNull() {
 		assertThrows(Exception.class, () -> so.templateExecute(null));
 	}
-	
+
 	@Test
 	void testImeClanaNull() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -83,10 +83,10 @@ class SOAddClanTest {
 		} catch (ParseException e) {
 			fail("Greska prilikom parsiranja datuma.");
 		}
-		
+
 		Clan c = new Clan(null, null, "Milic", "mile@gmail.com", d, "O65555555", new Kategorija(1l, null),
 				new Pozicija(1l, null));
-		
+
 		assertThrows(Exception.class, () -> so.templateExecute(c));
 	}
 
@@ -100,7 +100,7 @@ class SOAddClanTest {
 		} catch (ParseException e) {
 			fail("Greska prilikom parsiranja datuma.");
 		}
-		
+
 		Clan c = new Clan(null, "Mile", "Milic", "mile@gmail.com", d, "O65555555", new Kategorija(1l, null),
 				new Pozicija(1l, null));
 
@@ -117,11 +117,11 @@ class SOAddClanTest {
 		} catch (ParseException e1) {
 			fail("Greska prilikom parsiranja datuma.");
 		}
-		Clan c = new Clan(null, "Nemanja", "Nikic", "nemanja@gmail.com", d, "0618888888",
-				new Kategorija(1l, null), new Pozicija(1l, null));
-		
+		Clan c = new Clan(null, "Nemanja", "Nikic", "nemanja@gmail.com", d, "0618888888", new Kategorija(1l, null),
+				new Pozicija(1l, null));
+
 		String telPocetni = c.getTelefonClana();
-		
+
 		try {
 			so.templateExecute(c);
 		} catch (Exception e) {
@@ -130,9 +130,9 @@ class SOAddClanTest {
 		c.setTelefonClana("0607777777");
 
 		assertThrows(Exception.class, () -> so.templateExecute(c));
-		
+
 		c.setTelefonClana(telPocetni);
-		
+
 		obrisiDodatogClanaIzBaze(c);
 	}
 
@@ -146,11 +146,11 @@ class SOAddClanTest {
 		} catch (ParseException e1) {
 			fail("Greska prilikom parsiranja datuma.");
 		}
-		Clan c = new Clan(null, "Nemanja", "Nikic", "nemanja@gmail.com", d, "0618888888",
-				new Kategorija(1l, null), new Pozicija(1l, null));
-		
+		Clan c = new Clan(null, "Nemanja", "Nikic", "nemanja@gmail.com", d, "0618888888", new Kategorija(1l, null),
+				new Pozicija(1l, null));
+
 		String emailPocetni = c.getEmail();
-		
+
 		try {
 			so.templateExecute(c);
 		} catch (Exception e) {
@@ -159,13 +159,11 @@ class SOAddClanTest {
 		c.setEmail("nemanja123@gmail.com");
 
 		assertThrows(Exception.class, () -> so.templateExecute(c));
-		
+
 		c.setEmail(emailPocetni);
-		
+
 		obrisiDodatogClanaIzBaze(c);
 	}
-
-	
 
 	private ArrayList<Clan> vratiSveClanoveIzBaze() {
 		try {
@@ -191,4 +189,27 @@ class SOAddClanTest {
 		}
 	}
 
+	@Test
+	void testSerijalizujJSON() {
+		Clan clan = new Clan();
+		clan.setClanID(1l);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		Date d = null;
+		try {
+			d = sdf.parse("11.11.2001");
+		} catch (ParseException e) {
+			fail("Greska prilikom parsiranja datuma.");
+		}
+		
+		clan.setDatumRodjenja(d);
+		clan.setEmail("zarko@gmail.com");
+		clan.setTelefonClana("0612345678");
+		clan.setImeClana("Marko");
+		clan.setPrezimeClana("Zarkovic");
+		clan.setKategorija(new Kategorija(3l, "Senior"));
+		clan.setPozicija(new Pozicija(6l, "Napadac"));
+		
+		assertEquals("{\"Ime\":\"Marko\",\"Prezime\":\"Zarkovic\",\"Datum rodjenja\":\"Nov 11, 2001, 12:00:00 AM\",\"Kategorija\":{\"Naziv\":\"Senior\"},\"Pozicija na terenu\":{\"Naziv\":\"Napadac\"}}",so.serijalizujJSON(clan));
+	}
 }

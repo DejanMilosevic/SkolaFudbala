@@ -8,6 +8,7 @@ import rs.np.milosevic_dejan_0098_2019.so.clan.SOAddClan;
 import rs.np.milosevic_dejan_0098_2019.so.kategorija.SOGetAllKategorija;
 import rs.np.milosevic_dejan_0098_2019.so.pozicija.SOGetAllPozicija;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +20,9 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Predstavlja formu koja omogucava dodavanje novog clana u bazu podataka.
@@ -143,7 +147,9 @@ public class FormNoviClan extends javax.swing.JDialog {
         			.addGroup(layout.createParallelGroup(Alignment.LEADING)
         				.addGroup(layout.createSequentialGroup()
         					.addComponent(btnOtkazi, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+        					.addGap(18)
+        					.addComponent(getBtnSerijalizuj(), GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+        					.addGap(18)
         					.addComponent(btnDodaj, GroupLayout.PREFERRED_SIZE, 166, GroupLayout.PREFERRED_SIZE)
         					.addContainerGap())
         				.addGroup(layout.createSequentialGroup()
@@ -155,16 +161,16 @@ public class FormNoviClan extends javax.swing.JDialog {
         							.addComponent(jLabel9, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         							.addComponent(jLabel10, Alignment.LEADING)
         							.addComponent(jLabel11, Alignment.LEADING))
-        						.addComponent(lblPozicija, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        						.addComponent(lblPozicija, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(getCmbPozicija(), 0, 331, Short.MAX_VALUE)
-        						.addComponent(txtTelefon, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
-        						.addComponent(txtIme, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
-        						.addComponent(txtPrezime, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
-        						.addComponent(txtEmail, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
-        						.addComponent(txtDatumRodjenja, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
-        						.addComponent(cmbKategorija, 0, 331, Short.MAX_VALUE)))))
+        						.addComponent(getCmbPozicija(), 0, 383, Short.MAX_VALUE)
+        						.addComponent(txtTelefon, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+        						.addComponent(txtIme, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+        						.addComponent(txtPrezime, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+        						.addComponent(txtEmail, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+        						.addComponent(txtDatumRodjenja, GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+        						.addComponent(cmbKategorija, 0, 383, Short.MAX_VALUE)))))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
@@ -197,10 +203,11 @@ public class FormNoviClan extends javax.swing.JDialog {
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(getCmbPozicija(), GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
         				.addComponent(lblPozicija))
-        			.addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(btnOtkazi)
-        				.addComponent(btnDodaj)))
+        				.addComponent(btnDodaj)
+        				.addComponent(getBtnSerijalizuj(), GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)))
         );
         getContentPane().setLayout(layout);
 
@@ -278,6 +285,7 @@ public class FormNoviClan extends javax.swing.JDialog {
     private javax.swing.JTextField txtTelefon;
     private JLabel lblPozicija;
     private JComboBox cmbPozicija;
+    private JButton btnSerijalizuj;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -330,5 +338,44 @@ public class FormNoviClan extends javax.swing.JDialog {
         } catch (Exception ex) {
             Logger.getLogger(FormNoviClan.class.getName()).log(Level.SEVERE, null, ex);
         }
+	}
+	private JButton getBtnSerijalizuj() {
+		if (btnSerijalizuj == null) {
+			btnSerijalizuj = new JButton("Serijalizuj clana");
+			btnSerijalizuj.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (txtIme.getText().isEmpty() || txtPrezime.getText().isEmpty()
+		                    || txtEmail.getText().isEmpty()
+		                    || txtTelefon.getText().isEmpty()
+		                    || txtDatumRodjenja.getText().isEmpty()) {
+		                //JOptionPane.showMessageDialog(this, "Sva polja moraju biti popunjena!", "Upozorenje", JOptionPane.WARNING_MESSAGE);
+		                return;
+		            }
+
+		            String ime = txtIme.getText();
+		            String prezime = txtPrezime.getText();
+		            String email = txtEmail.getText();
+		            String telefon = txtTelefon.getText();
+		            
+		            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		            Date datumRodjenja = null;
+					try {
+						datumRodjenja = sdf.parse(txtDatumRodjenja.getText());
+					} catch (ParseException e1) {
+						e1.printStackTrace();
+					}
+		           
+		            Kategorija kategorija = (Kategorija) cmbKategorija.getSelectedItem();
+		            Pozicija pozicija = (Pozicija) cmbPozicija.getSelectedItem();
+
+		            Clan c = new Clan(null, ime, prezime, email, datumRodjenja, telefon, kategorija, pozicija);
+		            
+		            (new SOAddClan()).serijalizujJSON(c);
+		            //JOptionPane.showMessageDialog(this, "Uspesno serijalizovan clan!", "Obavestenje", JOptionPane.INFORMATION_MESSAGE);
+		            System.out.println("Uspesno serijalizovan clan.");
+				}
+			});
+		}
+		return btnSerijalizuj;
 	}
 }

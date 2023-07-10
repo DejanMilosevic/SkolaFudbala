@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rs.np.milosevic_dejan_0098_2019.so.trening;
 
 import rs.np.milosevic_dejan_0098_2019.db.DBBroker;
